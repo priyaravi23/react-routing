@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CarInfoComponent from './components/car/car-info/car-info.component';
 import AboutComponent from './components/about.component';
 import HomeComponent from './components/home.component';
@@ -6,61 +6,54 @@ import MainComponent from './components/car/main';
 import CarDetailsComponent from './components/car/car-details/car-details.component';
 import './App.css';
 
-import { Route, Switch } from 'react-router';
+import {Route, Switch} from 'react-router';
 
 import {
-    BrowserRouter as Router,
-    useParams
+  BrowserRouter as Router
 } from "react-router-dom";
 
+
 function App() {
+  const [cars, setCars] = useState({});
+  
   return (
-      <Router>
-            <Switch>
-                <Route exact path='/' component={ Home } />
-                <Route path="/cars" component={ CarInfo } />
-                <Route path="/cars/:id" component={ CarDetails } />
-                <Route path="/about" component={ About }/>
-            </Switch>
-      </Router>
+    <Router>
+      <MainComponent/>
+      <Switch>
+        <Route exact path='/' component={Home}/>
+        <Route path="/cars/:id" component={props => {
+          const car = cars[props.match.params.id];
+          if (car) {
+            return (<CarDetailsComponent car={car}/>);
+          } else {
+            return null;
+          }
+
+        }}/>
+
+        <Route path="/about" component={About}/>
+        <Route path="/cars">
+          <CarInfoComponent setCars={setCars} cars={cars}/>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
-function CarInfo() {
-    return (
-        <div>
-            <MainComponent />
-            <CarInfoComponent />
-        </div>
-    );
-}
-
 function Home() {
-    return (
-        <div>
-            <MainComponent />
-            <HomeComponent />
-        </div>
-    );
+  return (
+    <div>
+      <HomeComponent/>
+    </div>
+  );
 }
 
 function About() {
-    return (
-        <div>
-            <MainComponent />
-            <AboutComponent />
-        </div>
-    );
-}
-
-function CarDetails() {
-    let { id } = useParams();
-
-    return (
-        <div>
-          <CarDetailsComponent />
-        </div>
-    )
+  return (
+    <div>
+      <AboutComponent/>
+    </div>
+  );
 }
 
 export default App;

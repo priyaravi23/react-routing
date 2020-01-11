@@ -1,53 +1,45 @@
 import React, { Component } from 'react';
-import mockCarInfoService from '../car-mock-data';
+import fetchCars from '../car-mock-data';
+import { func, object, arrayOf } from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class CarInfoComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            cars: []
-        };
+  static propTypes = {
+    setCars: func,
+    cars: arrayOf(object)
+  };
 
-        this.mockCarInfoService = new mockCarInfoService();
-    }
+  componentDidMount() {
+    fetchCars().then(cars => {
+      console.log('working with cars: ', cars);
+      this.props.setCars(cars);
+    }, err => {
+      console.log(err);
+    })
+  }
 
-    componentDidMount() {
-        this.getItems();
-    }
-
-    getItems() {
-        this.mockCarInfoService.retrieveItems().then(cars => {
-                this.setState({
-                    cars: cars
-                });
-            }
-        );
-    }
-
-    render() {
-        // Get data from route props
-        // const cars = this.props.route.data;
-        // Map through cars and return linked cars
-        const carNode = this.state.cars.map((car) => {
-            return (
-                <Link
-                    to={"/cars/"+car.id}
-                    className="list-group-item"
-                    key={car.id}>
-                    {car.name}
-                </Link>
-            )
-        });
-        return (
-            <div>
-                <h1>Cars page</h1>
-                <div className="list-group">
-                    {carNode}
-                </div>
-            </div>
-        );
-    }
+  render() {
+    // Get data from route props
+    // const cars = this.props.route.data;
+    // Map through cars and return linked cars
+    const renderedCars = Object.values(this.props.cars).map(({id, name}) => {
+      return (
+        <Link
+          to={`/cars/${id}`}
+          className="list-group-item"
+          key={id}>
+          {name}
+        </Link>
+      )
+    });
+    return (
+      <div>
+        <div className="list-group">
+          {renderedCars}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default CarInfoComponent
