@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ArrowComponent from './arrow.component'
 
 class AboutComponent extends Component {
     constructor(props) {
@@ -25,25 +26,39 @@ class AboutComponent extends Component {
         this.goToNextSlide = this.goToNextSlide.bind(this);
 
     }
+
     goToPrevSlide () {
         const {currentIndex} = this.state;
-        const newPointer = currentIndex === 0 ? this.images.length -1 : currentIndex - 1;
-        this.setState({currentIndex: newPointer});
+        const index = currentIndex === 0 ? this.images.length -1 : currentIndex - 1;
+
+        this.setState({
+            currentIndex: index
+        });
     }
 
     goToNextSlide ()  {
         const {currentIndex} = this.state;
-        const newPointer = currentIndex === this.images.length - 1 ? 0 : currentIndex + 1;
-        this.setState({currentIndex: newPointer});
+        const index = currentIndex === this.images.length - 1 ? 0 : currentIndex + 1;
+
+        this.setState({
+            currentIndex: index
+        });
     }
 
     render() {
         return(
-            <div className="home">
+            <div className="carousel">
+                <ArrowComponent
+                    direction="left"
+                    clickFunction={ this.goToPrevSlide }
+                    glyph="&#9664;" />
+
                 <img src={this.images[this.state.currentIndex]} />
-                <br/>
-                <button class = "prev" onClick={this.goToPrevSlide}>&#10094;</button>
-                <button class = "next" onClick={this.goToNextSlide}>&#10095;</button>
+
+                <ArrowComponent
+                    direction="right"
+                    clickFunction={ this.goToNextSlide }
+                    glyph="&#9654;" />
             </div>
 
         );
