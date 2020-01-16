@@ -1,5 +1,6 @@
 # Handle Routes with React Router
 
+![](public/img/home.png)
 ![](public/img/cars-list.png)
 ![](public/img/car-details.png)
 

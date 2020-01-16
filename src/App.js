@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import CarInfoComponent from './components/car/car-info/car-info.component';
 import AboutComponent from './components/about.component';
 import HomeComponent from './components/home.component';
-import MainComponent from './components/car/main';
+import MainComponent from './components/car/main.component';
 import CarDetailsComponent from './components/car/car-details/car-details.component';
 import './App.css';
 
@@ -31,10 +31,10 @@ function App() {
 
         }}/>
 
+          <Route path="/cars">
+              <CarInfoComponent setCars={setCars} cars={cars}/>
+          </Route>
         <Route path="/about" component={About}/>
-        <Route path="/cars">
-          <CarInfoComponent setCars={setCars} cars={cars}/>
-        </Route>
       </Switch>
     </Router>
   );
